@@ -61,9 +61,9 @@ namespace Invsion
             Services.AddService(typeof(IAssetManager), _assetManager);
 
             // Add Screens
-            _gameScreenService.AddScreen(new LogoSplashScreen(Services));
             _gameScreenService.AddScreen(new SplashScreen(Services));
-            _gameScreenService.Start(ScreenName.LOGO_SPLASH);
+            _gameScreenService.AddScreen(new TitleScreen(Services));
+            _gameScreenService.Start(ScreenName.SPLASH);
 
             base.Initialize();
 

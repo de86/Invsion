@@ -1,8 +1,7 @@
 ﻿public enum ScreenName
 {
-    LOGO_SPLASH,
     SPLASH,
-    MAIN_MENU
+    TITLE
 }
 
 public enum SoundAssetName

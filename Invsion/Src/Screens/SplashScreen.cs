@@ -1,36 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using Invsion.Src.Input;
 using Invsion.Src.Shared;
 using Invsion.Src.Shared.Helpers;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Invsion.Src.Screens
 {
     class SplashScreen : GameScreen
     {
         private Texture2D _tex_logo;
+        private SoundEffect _sfx_intro_jingle;
         private IInputActionMap _inputActionMap;
-        private Color color = Color.White;
+        private Color _logoColor = new Color (255f, 255f, 255f, 255);
+        private float _logoAlpha = 0;
+        private float _elapsedTime = 0;
+        private bool _hasJinglePlayed = false;
 
 
 
         public SplashScreen (GameServiceContainer services) : base(ScreenName.SPLASH, services) {
             Initialize();
-        }
-
-
-        public override void Initialize ()
-        {
-            // Load Texture
-            _inputActionMap = new InputActionMap();
-            _inputActionMap.BindActionToInput(SkipScreen, Buttons.A);
-            _inputActionMap.BindActionToInput(SkipScreen, Keys.Space);
         }
 
 
@@ -44,26 +41,66 @@ namespace Invsion.Src.Screens
 
 
 
-        private void SkipScreen ()
+        public override void Initialize ()
         {
-            GameScreenService.SetActiveScreen(ScreenName.LOGO_SPLASH);
+            _inputActionMap = new InputActionMap();
+            _inputActionMap.BindActionToInput(SkipScreen, Buttons.A);
+            _inputActionMap.BindActionToInput(SkipScreen, Keys.Space);
+            _inputActionMap.BindActionToInput(PlayJingle, Keys.S);
+
         }
 
 
 
         public override void LoadContent ()
         {
-            _tex_logo = AssetManager.LoadLevelAsset<Texture2D>("Art/ship_L");
+            _tex_logo = AssetManager.LoadLevelAsset<Texture2D>("Art/LogoWhiteYellow");
+            _sfx_intro_jingle = AssetManager.LoadLevelAsset<SoundEffect>("Audio/FX/confirmation_002");
+
             return;
         }
-        
 
 
+
+        // Todo: Find a better way to do "Pre-programmed" sequences
         public override void Update (GameTime gameTime)
         {
+            _increaseAlpha((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            if (!_hasJinglePlayed &&_logoAlpha >= 1)
+            {
+                PlayJingle();
+                _hasJinglePlayed = true;
+
+            } 
+
             return;
         }
 
+
+
+        private void _increaseAlpha (float deltaTime)
+        {
+            if (_logoAlpha >= 1)
+                return;
+
+            _elapsedTime += deltaTime / 2;
+           _logoAlpha = Math.Clamp(_elapsedTime, 0, 1);
+        }
+
+
+
+        private void SkipScreen ()
+        {
+            GameScreenService.SetActiveScreen(ScreenName.TITLE);
+        }
+
+
+
+        private void PlayJingle ()
+        {
+            _sfx_intro_jingle.Play();
+        }
 
 
 
@@ -76,7 +113,9 @@ namespace Invsion.Src.Screens
                     SettingsManager.GetSettingValue<int>("RESOLUTION_WIDTH"),
                     SettingsManager.GetSettingValue<int>("RESOLUTION_HEIGHT")
                 ),
-                color);
+                _logoColor * _logoAlpha
+            );
+            
 
             return;
         }
@@ -87,7 +126,6 @@ namespace Invsion.Src.Screens
         {
             return;
         }
-
 
 
 
