@@ -90,10 +90,22 @@ namespace Invsion.Src.Screens
 
 
 
-
         public override void Resume ()
         {
             return;
+        }
+
+
+        public override void Reset ()
+        {
+            return;
+        }
+
+
+
+        public override void Exit ()
+        {
+            base.Exit();
         }
     }
 }

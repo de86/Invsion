@@ -20,6 +20,8 @@ namespace Invsion.Src.Shared
         internal ISettingsManager SettingsManager;
         internal IAssetManager AssetManager;
 
+        internal bool _isPaused = false;
+
         public GameScreen (ScreenName screenName, GameServiceContainer services)
         {
             name = screenName;
@@ -32,19 +34,36 @@ namespace Invsion.Src.Shared
         }
 
         public abstract void Draw (SpriteBatch defaultSpriteBatch, GameTime gameTime);
+
         public virtual void Start ()
         {
             LoadContent();
         }
+
         public virtual void Exit ()
         {
+            _isPaused = true;
             AssetManager.UnloadLevelAssets();
         }
 
         public abstract void Initialize ();
+
         public abstract void LoadContent ();
-        public abstract void Pause ();
-        public abstract void Resume ();
-        public abstract void Update (GameTime gameTime);
+
+        public virtual void Pause ()
+        {
+            _isPaused = true;
+        }
+
+        public virtual void Resume () {
+            _isPaused = false;
+        }
+
+        public virtual void Update (GameTime gameTime) {
+            if (_isPaused)
+                return;
+        }
+
+        public abstract void Reset ();
     }
 }

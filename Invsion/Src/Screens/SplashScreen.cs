@@ -16,6 +16,8 @@ namespace Invsion.Src.Screens
 {
     class SplashScreen : GameScreen
     {
+        private float FADE_IN_TIME_SCALE = 2;
+
         private Texture2D _tex_logo;
         private SoundEffect _sfx_intro_jingle;
         private IInputActionMap _inputActionMap;
@@ -27,6 +29,7 @@ namespace Invsion.Src.Screens
 
 
         public SplashScreen (GameServiceContainer services) : base(ScreenName.SPLASH, services) {
+            _setDefaultScreenState();
             Initialize();
         }
 
@@ -34,9 +37,11 @@ namespace Invsion.Src.Screens
 
         public override void Start ()
         {
-            base.Start();
+            _setDefaultScreenState();
 
             InputManager.SetActiveInputActionMap(_inputActionMap);
+
+            base.Start();
         }
 
 
@@ -49,6 +54,16 @@ namespace Invsion.Src.Screens
             _inputActionMap.BindActionToInput(PlayJingle, Keys.S);
 
         }
+
+
+
+        private void _setDefaultScreenState ()
+        {
+            _logoColor = new Color(255f, 255f, 255f, 255);
+            _logoAlpha = 0;
+            _elapsedTime = 0;
+            _hasJinglePlayed = false;
+    }
 
 
 
@@ -65,6 +80,8 @@ namespace Invsion.Src.Screens
         // Todo: Find a better way to do "Pre-programmed" sequences
         public override void Update (GameTime gameTime)
         {
+            base.Update(gameTime);
+
             _increaseAlpha((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             if (!_hasJinglePlayed &&_logoAlpha >= 1)
@@ -84,7 +101,7 @@ namespace Invsion.Src.Screens
             if (_logoAlpha >= 1)
                 return;
 
-            _elapsedTime += deltaTime / 2;
+            _elapsedTime += deltaTime / FADE_IN_TIME_SCALE;
            _logoAlpha = Math.Clamp(_elapsedTime, 0, 1);
         }
 
@@ -124,6 +141,8 @@ namespace Invsion.Src.Screens
 
         public override void Pause ()
         {
+            base.Pause();
+
             return;
         }
 
@@ -131,7 +150,23 @@ namespace Invsion.Src.Screens
 
         public override void Resume ()
         {
+            base.Resume();
+
             return;
+        }
+
+
+
+        public override void Reset ()
+        {
+            _setDefaultScreenState();
+        }
+
+
+
+        public override void Exit ()
+        {
+            base.Exit();
         }
     }
 }
