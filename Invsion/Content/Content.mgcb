@@ -43,3 +43,17 @@
 /processorParam:Quality=Best
 /build:Audio/FX/confirmation_002.ogg
 
+#begin Fonts/orbitron-regular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/orbitron-regular.spritefont
+
+#begin Fonts/orbitron-regular-24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/orbitron-regular-24.spritefont
+

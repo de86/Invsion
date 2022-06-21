@@ -26,7 +26,8 @@ namespace Invsion.Src.Screens
         private float _elapsedTime = 0;
         private bool _hasJinglePlayed = false;
 
-
+        private int RESOLUTION_WIDTH;
+        private int RESOLUTION_HEIGHT;
 
         public SplashScreen (GameServiceContainer services) : base(ScreenName.SPLASH, services) {
             _setDefaultScreenState();
@@ -48,6 +49,9 @@ namespace Invsion.Src.Screens
 
         public override void Initialize ()
         {
+            RESOLUTION_WIDTH = SettingsManager.GetSettingValue<int>("RESOLUTION_WIDTH");
+            RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>("RESOLUTION_HEIGHT");
+
             _inputActionMap = new InputActionMap();
             _inputActionMap.BindActionToInput(SkipScreen, Buttons.A);
             _inputActionMap.BindActionToInput(SkipScreen, Keys.Space);
@@ -95,7 +99,7 @@ namespace Invsion.Src.Screens
         }
 
 
-
+        // ToDo: Move to Render Helpers
         private void _increaseAlpha (float deltaTime)
         {
             if (_logoAlpha >= 1)
@@ -126,9 +130,10 @@ namespace Invsion.Src.Screens
             defaultSpriteBatch.Draw(
                 _tex_logo,
                 RenderHelpers.ScreenCentre(
-                    _tex_logo,
-                    SettingsManager.GetSettingValue<int>("RESOLUTION_WIDTH"),
-                    SettingsManager.GetSettingValue<int>("RESOLUTION_HEIGHT")
+                    _tex_logo.Width,
+                    _tex_logo.Height,
+                    RESOLUTION_WIDTH,
+                    RESOLUTION_HEIGHT
                 ),
                 _logoColor * _logoAlpha
             );
