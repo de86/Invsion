@@ -43,6 +43,12 @@
 /processorParam:Quality=Best
 /build:Audio/FX/confirmation_002.ogg
 
+#begin Audio/Music/neon-god-loop.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/neon-god-loop.wav
+
 #begin Fonts/orbitron-regular.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

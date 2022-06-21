@@ -8,7 +8,7 @@ using Invsion.Src.Shared.Helpers;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 using Invsion.Src.Shared.Utilities;
 
@@ -18,8 +18,10 @@ namespace Invsion.Src.Screens
     {
         // ToDo: Create Text/Dynamic Text wrapper class
         private SpriteFont _titleFont;
-        private Vector2 _titleFontSize;
         private SpriteFont _titleFontSmall;
+        private Song _titleMusic;
+
+        private Vector2 _titleFontSize;
         private Vector2 _startTextSize;
         private IInputActionMap _inputActionMap;
         private SwitchTimer _blinkTimer;
@@ -31,6 +33,7 @@ namespace Invsion.Src.Screens
 
         private int RESOLUTION_WIDTH;
         private int RESOLUTION_HEIGHT;
+
 
 
         public TitleScreen (GameServiceContainer services) : base(ScreenName.TITLE, services) {
@@ -67,6 +70,10 @@ namespace Invsion.Src.Screens
 
             _titleFontSmall = AssetManager.LoadLevelAsset<SpriteFont>("Fonts/orbitron-regular-24");
             _startTextSize = _titleFontSmall.MeasureString(_startText);
+
+            _titleMusic = AssetManager.LoadLevelAsset<Song>("Audio/Music/neon-god-loop");
+            MediaPlayer.Play(_titleMusic);
+            MediaPlayer.IsRepeating = true;
 
             return;
         }
