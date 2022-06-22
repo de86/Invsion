@@ -45,8 +45,8 @@ namespace Invsion.Src.Screens
 
         public override void Initialize ()
         {
-            RESOLUTION_WIDTH = SettingsManager.GetSettingValue<int>(CONSTANTS.SETTING_RESOLUTION_WIDTH);
-            RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>(CONSTANTS.SETTING_RESOLUTION_HEIGHT);
+            RESOLUTION_WIDTH = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_WIDTH);
+            RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_HEIGHT);
 
             _inputActionMap = new InputActionMap();
 
@@ -66,10 +66,10 @@ namespace Invsion.Src.Screens
 
         public override void LoadContent ()
         {
-            _titleFont = AssetManager.LoadLevelAsset<SpriteFont>(CONSTANTS.ASSET_TITLE_FONT);
-            _titleFontSmall = AssetManager.LoadLevelAsset<SpriteFont>(CONSTANTS.ASSET_TITLE_FONT_SMALL);
+            _titleFont = AssetManager.LoadLevelAsset<SpriteFont>(ASSETS.TITLE_FONT);
+            _titleFontSmall = AssetManager.LoadLevelAsset<SpriteFont>(ASSETS.TITLE_FONT_SMALL);
 
-            _titleMusic = AssetManager.LoadLevelAsset<Song>(CONSTANTS.ASSET_TITLE_MUSIC_SMALL);
+            _titleMusic = AssetManager.LoadLevelAsset<Song>(ASSETS.TITLE_MUSIC_SMALL);
             MediaPlayer.Play(_titleMusic);
             MediaPlayer.IsRepeating = true;
 

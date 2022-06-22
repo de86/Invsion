@@ -29,6 +29,8 @@ namespace Invsion.Src.Screens
         private int RESOLUTION_WIDTH;
         private int RESOLUTION_HEIGHT;
 
+
+
         public SplashScreen (GameServiceContainer services) : base(ScreenName.SPLASH, services) {
             _setDefaultScreenState();
             Initialize();
@@ -49,8 +51,8 @@ namespace Invsion.Src.Screens
 
         public override void Initialize ()
         {
-            RESOLUTION_WIDTH = SettingsManager.GetSettingValue<int>(CONSTANTS.SETTING_RESOLUTION_WIDTH);
-            RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>(CONSTANTS.SETTING_RESOLUTION_HEIGHT);
+            RESOLUTION_WIDTH = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_WIDTH);
+            RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_HEIGHT);
 
             _inputActionMap = new InputActionMap();
             _inputActionMap.BindActionToInput(SkipScreen, Buttons.A);
@@ -73,8 +75,8 @@ namespace Invsion.Src.Screens
 
         public override void LoadContent ()
         {
-            _tex_logo = AssetManager.LoadLevelAsset<Texture2D>(CONSTANTS.ASSET_SPLASH_LOGO);
-            _sfx_intro_jingle = AssetManager.LoadLevelAsset<SoundEffect>(CONSTANTS.ASSET_SPLASH_JINGLE);
+            _tex_logo = AssetManager.LoadLevelAsset<Texture2D>(ASSETS.SPLASH_LOGO);
+            _sfx_intro_jingle = AssetManager.LoadLevelAsset<SoundEffect>(ASSETS.SPLASH_JINGLE);
 
             return;
         }
@@ -97,6 +99,7 @@ namespace Invsion.Src.Screens
 
             return;
         }
+
 
 
         // ToDo: Move to Render Helpers
