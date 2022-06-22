@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Invsion.Src.Input;
 using Invsion.Src.Shared;
 using Invsion.Src.Shared.Helpers;
+using Invsion.Src.Shared.Graphics;
 
 namespace Invsion.Src.Screens
 {
@@ -18,6 +19,7 @@ namespace Invsion.Src.Screens
     {
         private float FADE_IN_TIME_SCALE = 2;
 
+        private Sprite _logo;
         private Texture2D _tex_logo;
         private SoundEffect _sfx_intro_jingle;
         private IInputActionMap _inputActionMap;
@@ -58,7 +60,6 @@ namespace Invsion.Src.Screens
             _inputActionMap.BindActionToInput(SkipScreen, Buttons.A);
             _inputActionMap.BindActionToInput(SkipScreen, Keys.Space);
             _inputActionMap.BindActionToInput(PlayJingle, Keys.S);
-
         }
 
 
@@ -69,7 +70,7 @@ namespace Invsion.Src.Screens
             _logoAlpha = 0;
             _elapsedTime = 0;
             _hasJinglePlayed = false;
-    }
+        }
 
 
 
@@ -77,6 +78,9 @@ namespace Invsion.Src.Screens
         {
             _tex_logo = AssetManager.LoadLevelAsset<Texture2D>(ASSETS.SPLASH_LOGO);
             _sfx_intro_jingle = AssetManager.LoadLevelAsset<SoundEffect>(ASSETS.SPLASH_JINGLE);
+
+            _logo = new Sprite(_tex_logo, new Vector2(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2));
+            _logo.SetOriginCentre();
 
             return;
         }
@@ -89,6 +93,7 @@ namespace Invsion.Src.Screens
             base.Update(gameTime);
 
             _increaseAlpha((float)gameTime.ElapsedGameTime.TotalSeconds);
+            _logo.UpdateAlpha(_logoAlpha);
 
             if (!_hasJinglePlayed &&_logoAlpha >= 1)
             {
@@ -130,16 +135,7 @@ namespace Invsion.Src.Screens
 
         public override void Draw (SpriteBatch defaultSpriteBatch, GameTime gameTime)
         {
-            defaultSpriteBatch.Draw(
-                _tex_logo,
-                RenderHelpers.ScreenCentre(
-                    _tex_logo.Width,
-                    _tex_logo.Height,
-                    RESOLUTION_WIDTH,
-                    RESOLUTION_HEIGHT
-                ),
-                _logoColor * _logoAlpha
-            );
+            _logo.Draw(defaultSpriteBatch);
             
 
             return;
