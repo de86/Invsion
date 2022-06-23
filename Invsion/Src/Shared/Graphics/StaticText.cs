@@ -13,6 +13,7 @@ namespace Invsion.Src.Shared.Graphics
         private string _text;
 
 
+
         public StaticText (string text, SpriteFont font, Vector2 position) : base (0, 0, position)
         {
             _text = text;

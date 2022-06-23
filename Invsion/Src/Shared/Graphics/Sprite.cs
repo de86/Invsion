@@ -11,6 +11,8 @@ namespace Invsion.Src.Shared.Graphics
     {
         private Texture2D _texture;
 
+
+
         public Sprite (Texture2D texture, Vector2 position) : base (texture.Width, texture.Height, position)
         {
             _texture = texture;

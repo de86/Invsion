@@ -63,6 +63,7 @@ namespace Invsion
             // Add Screens
             _gameScreenService.AddScreen(new SplashScreen(Services));
             _gameScreenService.AddScreen(new TitleScreen(Services));
+            _gameScreenService.AddScreen(new PlayScreen(Services));
             _gameScreenService.Start(ScreenName.SPLASH);
 
             base.Initialize();

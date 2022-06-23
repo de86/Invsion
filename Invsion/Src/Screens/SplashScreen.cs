@@ -23,7 +23,6 @@ namespace Invsion.Src.Screens
         private Texture2D _tex_logo;
         private SoundEffect _sfx_intro_jingle;
         private IInputActionMap _inputActionMap;
-        private Color _logoColor = new Color (255f, 255f, 255f, 255);
         private float _logoAlpha = 0;
         private float _elapsedTime = 0;
         private bool _hasJinglePlayed = false;
@@ -66,7 +65,6 @@ namespace Invsion.Src.Screens
 
         private void _setDefaultScreenState ()
         {
-            _logoColor = new Color(255f, 255f, 255f, 255);
             _logoAlpha = 0;
             _elapsedTime = 0;
             _hasJinglePlayed = false;

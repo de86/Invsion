@@ -9,7 +9,6 @@ using Invsion.Src.Shared.Helpers;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 using Invsion.Src.Shared.Graphics;
@@ -17,7 +16,7 @@ using Invsion.Src.Shared.Utilities;
 
 namespace Invsion.Src.Screens
 {
-    class TitleScreen : GameScreen
+    class PlayScreen : GameScreen
     {
         private SpriteFont _titleFont;
         private SpriteFont _titleFontSmall;
@@ -28,18 +27,16 @@ namespace Invsion.Src.Screens
         private float _blinkDuration = 1;
 
         // ToDo: Move to localisation
-        private string _titleTextString = "INVSION";
-        private string _startTextString = "Press X to start";
+        private string _titleTextString = "Play";
 
         private StaticText _titleText;
-        private StaticText _startText;
 
         private int RESOLUTION_WIDTH;
         private int RESOLUTION_HEIGHT;
 
 
 
-        public TitleScreen (GameServiceContainer services) : base(ScreenName.TITLE, services) {
+        public PlayScreen (GameServiceContainer services) : base(ScreenName.PLAY, services) {
             Initialize();
         }
 
@@ -51,16 +48,8 @@ namespace Invsion.Src.Screens
             RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_HEIGHT);
 
             _inputActionMap = new InputActionMap();
-            _inputActionMap.BindActionToInput(_skipScreen, Keys.Space);
 
             _blinkTimer = new SwitchTimer(_blinkDuration);
-        }
-
-
-        
-        private void _skipScreen ()
-        {
-            GameScreenService.SetActiveScreen(ScreenName.PLAY);
         }
 
 
@@ -87,9 +76,6 @@ namespace Invsion.Src.Screens
             _titleText = new StaticText(_titleTextString, _titleFont, screenCentre);
             _titleText.SetOriginCentre();
 
-            _startText = new StaticText(_startTextString, _titleFontSmall, new Vector2(screenCentre.X, screenCentre.Y + 100));
-            _startText.SetOriginCentre();
-
             return;
         }
         
@@ -98,7 +84,6 @@ namespace Invsion.Src.Screens
         public override void Update (GameTime gameTime)
         {
             _blinkTimer.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-            _startText.UpdateAlpha(_blinkTimer.GetValue());
 
             return;
         }
@@ -108,7 +93,6 @@ namespace Invsion.Src.Screens
         public override void Draw (SpriteBatch defaultSpriteBatch, GameTime gameTime)
         {
             _titleText.Draw(defaultSpriteBatch);
-            _startText.Draw(defaultSpriteBatch);
 
             return;
         }
