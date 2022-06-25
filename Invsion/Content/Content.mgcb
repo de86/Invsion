@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Art/LogoWhiteYellow.png
+#begin Art/logov2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,7 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Art/LogoWhiteYellow.png
+/build:Art/logov2.png
 
 #begin Art/ship_L.png
 /importer:TextureImporter

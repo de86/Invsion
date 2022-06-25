@@ -18,18 +18,8 @@ namespace Invsion.Src.Screens
 {
     class PlayScreen : GameScreen
     {
-        private SpriteFont _titleFont;
-        private SpriteFont _titleFontSmall;
-        private Song _titleMusic;
-
+        private Texture2D _playerShipTexture;
         private IInputActionMap _inputActionMap;
-        private SwitchTimer _blinkTimer;
-        private float _blinkDuration = 1;
-
-        // ToDo: Move to localisation
-        private string _titleTextString = "Play";
-
-        private StaticText _titleText;
 
         private int RESOLUTION_WIDTH;
         private int RESOLUTION_HEIGHT;
@@ -48,8 +38,6 @@ namespace Invsion.Src.Screens
             RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_HEIGHT);
 
             _inputActionMap = new InputActionMap();
-
-            _blinkTimer = new SwitchTimer(_blinkDuration);
         }
 
 
@@ -65,16 +53,7 @@ namespace Invsion.Src.Screens
 
         public override void LoadContent ()
         {
-            _titleFont = AssetManager.LoadLevelAsset<SpriteFont>(ASSETS.TITLE_FONT);
-            _titleFontSmall = AssetManager.LoadLevelAsset<SpriteFont>(ASSETS.TITLE_FONT_SMALL);
-
-            _titleMusic = AssetManager.LoadLevelAsset<Song>(ASSETS.TITLE_MUSIC_SMALL);
-            MediaPlayer.Play(_titleMusic);
-            MediaPlayer.IsRepeating = true;
-
-            Vector2 screenCentre = new Vector2(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2);
-            _titleText = new StaticText(_titleTextString, _titleFont, screenCentre);
-            _titleText.SetOriginCentre();
+            _playerShipTexture = AssetManager.LoadLevelAsset<Texture2D>("Art/ship_L");
 
             return;
         }
@@ -83,8 +62,6 @@ namespace Invsion.Src.Screens
 
         public override void Update (GameTime gameTime)
         {
-            _blinkTimer.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-
             return;
         }
 
@@ -92,7 +69,11 @@ namespace Invsion.Src.Screens
 
         public override void Draw (SpriteBatch defaultSpriteBatch, GameTime gameTime)
         {
-            _titleText.Draw(defaultSpriteBatch);
+            defaultSpriteBatch.Draw(
+                _playerShipTexture,
+                new Vector2(100, 100),
+                Color.White
+            );
 
             return;
         }
