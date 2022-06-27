@@ -8,10 +8,10 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using Invsion.Src.Input;
-using Invsion.Src.Shared;
-using Invsion.Src.Shared.Helpers;
-using Invsion.Src.Shared.Graphics;
+using Invsion.Engine;
+using Invsion.Engine.Input;
+using Invsion.Engine.Helpers;
+using Invsion.Engine.Graphics;
 
 namespace Invsion.Src.Screens
 {
@@ -44,6 +44,7 @@ namespace Invsion.Src.Screens
             _setDefaultScreenState();
 
             InputManager.SetActiveInputActionMap(_inputActionMap);
+            EventBus.InputPressed.Subscribe(_onSkipScreen);
 
             base.Start();
         }
@@ -55,10 +56,10 @@ namespace Invsion.Src.Screens
             RESOLUTION_WIDTH = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_WIDTH);
             RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_HEIGHT);
 
-            _inputActionMap = new InputActionMap();
+            /*_inputActionMap = new InputActionMap();
             _inputActionMap.BindActionToInput(SkipScreen, Buttons.A);
             _inputActionMap.BindActionToInput(SkipScreen, Keys.Space);
-            _inputActionMap.BindActionToInput(PlayJingle, Keys.S);
+            _inputActionMap.BindActionToInput(PlayJingle, Keys.S);*/
         }
 
 
@@ -117,7 +118,7 @@ namespace Invsion.Src.Screens
 
 
 
-        private void SkipScreen ()
+        private void _onSkipScreen (object source, string action)
         {
             GameScreenService.SetActiveScreen(ScreenName.TITLE);
         }
@@ -169,6 +170,7 @@ namespace Invsion.Src.Screens
         public override void Exit ()
         {
             base.Exit();
+            EventBus.InputPressed.Unsubscribe(_onSkipScreen);
         }
     }
 }

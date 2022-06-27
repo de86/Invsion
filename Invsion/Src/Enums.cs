@@ -2,5 +2,5 @@
 {
     SPLASH,
     TITLE,
-    PLAY
+    GAMEPLAY
 }

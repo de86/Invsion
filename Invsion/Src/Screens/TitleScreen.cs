@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
-using Invsion.Src.Input;
-using Invsion.Src.Shared;
-using Invsion.Src.Shared.Helpers;
+using Invsion.Engine;
+using Invsion.Engine.Input;
+using Invsion.Engine.Helpers;
+using Invsion.Engine.Graphics;
+using Invsion.Engine.Utilities;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-
-using Invsion.Src.Shared.Graphics;
-using Invsion.Src.Shared.Utilities;
 
 namespace Invsion.Src.Screens
 {
@@ -60,7 +59,7 @@ namespace Invsion.Src.Screens
         
         private void _skipScreen ()
         {
-            GameScreenService.SetActiveScreen(ScreenName.PLAY);
+            GameScreenService.SetActiveScreen(ScreenName.GAMEPLAY);
         }
 
 
