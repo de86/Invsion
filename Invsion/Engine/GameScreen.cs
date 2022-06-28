@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Invsion.Engine.Input;
 using Invsion.Engine.Assets;
-using Invsion.Engine.Helpers;
 using Invsion.Engine.Settings;
 
 namespace Invsion.Engine
@@ -39,6 +38,7 @@ namespace Invsion.Engine
 
         public virtual void Start ()
         {
+            RegisterInputEventHandlers();
             LoadContent();
         }
 
@@ -67,5 +67,11 @@ namespace Invsion.Engine
         }
 
         public abstract void Reset ();
+
+
+
+        public abstract void RegisterInputEventHandlers ();
+
+        public abstract void UnregisterInputEventHandlers ();
     }
 }

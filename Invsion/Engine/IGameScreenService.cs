@@ -8,7 +8,7 @@ namespace Invsion.Engine
     {
         public void AddScreen (IGameScreen screen);
 
-        public void RemvoveScreen (IGameScreen screen);
+        public void RemoveScreen (IGameScreen screen);
 
         public void RemoveAllScreens ();
 

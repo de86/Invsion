@@ -40,5 +40,15 @@ namespace Invsion.Engine
         /// Called immediately before the gamescreen is disposed
         /// </summary>
         public void Exit();
+
+        /// <summary>
+        /// Called by the ScreenManager when a screen is set as active. Input event handlers should be registered here
+        /// </summary>
+        public abstract void RegisterInputEventHandlers ();
+
+        /// <summary>
+        /// Called by the ScreenManager before switching to a new screen. Input event handlers should be unregistered here.
+        /// </summary>
+        public abstract void UnregisterInputEventHandlers ();
     }
 }

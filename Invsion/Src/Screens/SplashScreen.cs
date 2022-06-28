@@ -20,7 +20,6 @@ namespace Invsion.Src.Screens
         private Sprite _logo;
         private Texture2D _tex_logo;
         private SoundEffect _sfx_intro_jingle;
-        private IInputActionMap _inputActionMap;
         private float _logoAlpha = 0;
         private float _elapsedTime = 0;
         private bool _hasJinglePlayed = false;
@@ -37,12 +36,23 @@ namespace Invsion.Src.Screens
 
 
 
+        public override void RegisterInputEventHandlers ()
+        {
+            EventBus.InputPressed.Subscribe(_onSkipScreen);
+        }
+
+
+
+        public override void UnregisterInputEventHandlers ()
+        {
+            EventBus.InputPressed.Subscribe(_onSkipScreen);
+        }
+
+
+
         public override void Start ()
         {
             _setDefaultScreenState();
-
-            InputManager.SetActiveInputActionMap(_inputActionMap);
-            EventBus.InputPressed.Subscribe(_onSkipScreen);
 
             base.Start();
         }
@@ -162,7 +172,6 @@ namespace Invsion.Src.Screens
         public override void Exit ()
         {
             base.Exit();
-            EventBus.InputPressed.Unsubscribe(_onSkipScreen);
         }
     }
 }

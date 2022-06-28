@@ -26,6 +26,20 @@ namespace Invsion.Src.Screens
 
 
 
+        public override void RegisterInputEventHandlers ()
+        {
+            return;
+        }
+
+
+
+        public override void UnregisterInputEventHandlers ()
+        {
+            return;
+        }
+
+
+
         public override void Initialize ()
         {
             player = new PlayerShip();

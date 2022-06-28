@@ -13,7 +13,6 @@ namespace Invsion.Engine
 {
     class GameScreenService : IGameScreenService
     {
-
         private GameScreenService _INSTANCE {
             get
             {
@@ -68,7 +67,7 @@ namespace Invsion.Engine
 
 
 
-        public void RemvoveScreen (IGameScreen screen)
+        public void RemoveScreen (IGameScreen screen)
         {
             throw new NotImplementedException();
         }
@@ -77,8 +76,10 @@ namespace Invsion.Engine
 
         public void SetActiveScreen (ScreenName screenName)
         {
+            _activeGameScreen.RegisterInputEventHandlers();
             _activeGameScreen.Exit();
             var nextScreen = GetScreen(screenName);
+            nextScreen.RegisterInputEventHandlers();
             nextScreen.Start();
             _activeGameScreen = _gameScreens[screenName];
         }
@@ -125,6 +126,8 @@ namespace Invsion.Engine
         {
             _activeGameScreen.Draw(_defaultSpriteBatch, gameTime);
         }
+
+
 
         public void UpdateActiveScreen (GameTime gameTime)
         {

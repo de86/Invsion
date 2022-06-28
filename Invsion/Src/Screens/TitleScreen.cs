@@ -48,15 +48,25 @@ namespace Invsion.Src.Screens
             RESOLUTION_WIDTH = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_WIDTH);
             RESOLUTION_HEIGHT = SettingsManager.GetSettingValue<int>(SETTINGS.RESOLUTION_HEIGHT);
 
-            _inputActionMap = new InputActionMap();
-            _inputActionMap.BindActionToInput(_skipScreen, Keys.Space);
-
             _blinkTimer = new SwitchTimer(_blinkDuration);
         }
 
 
-        
-        private void _skipScreen ()
+        public override void RegisterInputEventHandlers ()
+        {
+            EventBus.InputPressed.Subscribe(_onSkipScreen);
+        }
+
+
+
+        public override void UnregisterInputEventHandlers ()
+        {
+            EventBus.InputPressed.Subscribe(_onSkipScreen);
+        }
+
+
+
+        private void _onSkipScreen (object source, string action)
         {
             GameScreenService.SetActiveScreen(ScreenName.GAMEPLAY);
         }
