@@ -5,13 +5,9 @@ using System.Diagnostics;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 
 using Invsion.Engine;
 using Invsion.Engine.Input;
-using Invsion.Engine.Helpers;
-using Invsion.Engine.Graphics;
-using Invsion.Engine.Utilities;
 
 using Invsion.Src.Entities.Ship;
 

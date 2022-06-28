@@ -60,7 +60,6 @@ namespace Invsion
             _gameScreenService = new GameScreenService(_assetManager, _spriteBatch);
             
             Services.AddService(typeof(ISettingsManager), _settingsManager);
-            // ToDo: Build interface
             Services.AddService(typeof(EventBus), eventBus);
             Services.AddService(typeof(IInputManager), _inputManager);
             Services.AddService(typeof(GraphicsDevice), _graphicsDevice);
@@ -88,6 +87,7 @@ namespace Invsion
 
             eventBus.InputPressed.Subscribe(onInputPressed);
         }
+
 
 
         private void onInputPressed(object source, string keyName)

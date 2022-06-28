@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 using Invsion.Engine;
 using Invsion.Engine.Input;
-using Invsion.Engine.Helpers;
 using Invsion.Engine.Graphics;
 using Invsion.Engine.Utilities;
 
