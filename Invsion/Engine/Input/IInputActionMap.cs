@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Invsion.Engine.Input
 {
-    interface IInputActionMap
+    public interface IInputActionMap
     {
         public void BindActionToInput (Action action, Buttons button);
 

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Invsion.Engine
+namespace Invsion.Engine.Events
 {
-    public class GameEvent<T>
+    public class GameEvent<T> : IGameEvent<T>
     {
         private event EventHandler<T> _eventHandlers;
         public void Invoke (object eventSource, T eventName)

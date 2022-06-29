@@ -52,7 +52,7 @@ namespace Invsion.Src.Screens
         {
             base.Start();
 
-            InputManager.SetActiveInputActionMap(_inputActionMap);
+            //InputManager.SetActiveInputActionMap(_inputActionMap);
         }
 
 

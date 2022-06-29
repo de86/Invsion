@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
+
 using Invsion.Engine;
 using Invsion.Engine.Input;
 using Invsion.Engine.Graphics;
 using Invsion.Engine.Utilities;
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
+using Invsion.Src.Constants;
 
 namespace Invsion.Src.Screens
 {
@@ -21,7 +22,6 @@ namespace Invsion.Src.Screens
         private SpriteFont _titleFontSmall;
         private Song _titleMusic;
 
-        private IInputActionMap _inputActionMap;
         private SwitchTimer _blinkTimer;
         private float _blinkDuration = 1;
 
@@ -54,20 +54,21 @@ namespace Invsion.Src.Screens
 
         public override void RegisterInputEventHandlers ()
         {
-            EventBus.InputPressed.Subscribe(_onSkipScreen);
+            InputEventBus.SubscribeToEvent(INPUT_ACTIONS.FIRE_PRIMARY, _onSkipScreen);
         }
 
 
 
         public override void UnregisterInputEventHandlers ()
         {
-            EventBus.InputPressed.Subscribe(_onSkipScreen);
+            InputEventBus.UnsubscribeFromEvent(INPUT_ACTIONS.FIRE_PRIMARY, _onSkipScreen);
         }
 
 
 
-        private void _onSkipScreen (object source, string action)
+        private void _onSkipScreen (object source, object actionObj)
         {
+            var action = (string)actionObj;
             GameScreenService.SetActiveScreen(ScreenName.GAMEPLAY);
         }
 
@@ -76,8 +77,6 @@ namespace Invsion.Src.Screens
         public override void Start ()
         {
             base.Start();
-
-            InputManager.SetActiveInputActionMap(_inputActionMap);
         }
 
 

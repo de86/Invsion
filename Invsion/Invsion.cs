@@ -3,13 +3,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using Invsion.Engine;
+using Invsion.Engine.Events;
 using Invsion.Engine.Input;
 using Invsion.Engine.Settings;
 using Invsion.Engine.Assets;
 
 using Invsion.Src.Screens;
+using Invsion.Src.Constants;
 
 namespace Invsion
 {
@@ -34,6 +37,8 @@ namespace Invsion
 
         private float scale = 0.44444f;
 
+
+
         public Invsion()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -48,19 +53,23 @@ namespace Invsion
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _graphicsDevice = GraphicsDevice;
 
+            // Init Input
+            var keyboardInputControlScheme = new InputControlScheme<Keys>();
+            keyboardInputControlScheme.BindActionToInput(Keys.Space, INPUT_ACTIONS.FIRE_PRIMARY);
+
             // Initialize Services
             _settingsManager = new SettingsManager();
-            var eventBus = new EventBus();
-            _inputManager = new InputManager(eventBus);
-
+            var inputEventBus = new InputEventBus();
+            _inputManager = new InputManager(inputEventBus, keyboardInputControlScheme);
             var sharedContentManager = new ContentManager(Services, Content.RootDirectory);
             var uiContentManager = new ContentManager(Services, Content.RootDirectory);
             var levelContentManager = new ContentManager(Services, Content.RootDirectory);
             _assetManager = new AssetManager(sharedContentManager, uiContentManager, levelContentManager);
             _gameScreenService = new GameScreenService(_assetManager, _spriteBatch);
-            
+
+            // Add services to service provider
             Services.AddService(typeof(ISettingsManager), _settingsManager);
-            Services.AddService(typeof(EventBus), eventBus);
+            Services.AddService(typeof(InputEventBus), inputEventBus);
             Services.AddService(typeof(IInputManager), _inputManager);
             Services.AddService(typeof(GraphicsDevice), _graphicsDevice);
             Services.AddService(typeof(IAssetManager), _assetManager);
@@ -84,16 +93,6 @@ namespace Invsion
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
             _graphics.ApplyChanges();
-
-            eventBus.InputPressed.Subscribe(onInputPressed);
-        }
-
-
-
-        private void onInputPressed(object source, string keyName)
-        {
-            Debug.WriteLine("InputEvent");
-            Debug.WriteLine(keyName);
         }
 
 

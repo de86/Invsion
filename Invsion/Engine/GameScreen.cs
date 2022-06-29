@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+using Invsion.Engine.Events;
 using Invsion.Engine.Input;
 using Invsion.Engine.Assets;
 using Invsion.Engine.Settings;
@@ -17,7 +17,7 @@ namespace Invsion.Engine
         internal IInputManager InputManager;
         internal ISettingsManager SettingsManager;
         internal IAssetManager AssetManager;
-        internal EventBus EventBus;
+        internal InputEventBus InputEventBus;
 
         internal bool _isPaused = false;
 
@@ -30,8 +30,7 @@ namespace Invsion.Engine
             InputManager = (IInputManager)services.GetService(typeof(IInputManager));
             SettingsManager = (ISettingsManager)services.GetService(typeof(ISettingsManager));
             AssetManager = (IAssetManager)services.GetService(typeof(IAssetManager));
-            EventBus = (EventBus)services.GetService(typeof(EventBus));
-
+            InputEventBus = (InputEventBus)services.GetService(typeof(InputEventBus));
         }
 
         public abstract void Draw (SpriteBatch defaultSpriteBatch, GameTime gameTime);

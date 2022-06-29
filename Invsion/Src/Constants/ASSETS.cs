@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Invsion.Src
+﻿namespace Invsion.Src.Constants
 {
     public static class ASSETS
     {

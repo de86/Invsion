@@ -5,45 +5,61 @@ using System.Diagnostics;
 
 using Microsoft.Xna.Framework.Input;
 
-using Invsion.Engine.Utilities;
+using Invsion.Engine.Errors;
+using Invsion.Engine.Events;
 
 namespace Invsion.Engine.Input
 {
-    class InputManager : IInputManager
+    public class InputManager : IInputManager
     {
-        private EventBus _eventBus;
+        private InputEventBus _eventBus;
 
-        //private IInputActionMap _activeInputActionMap;
-        private List<Buttons> _pressedButtons;
-        private List<Keys> _pressedKeys;
+        private IInputControlScheme<Keys> _keyboardControlScheme;
 
-        private Dictionary<string, string> __actionKeyBinds;
+        private KeyboardState keyboardState;
+        private KeyboardState previousKeyboardState;
 
-        KeyboardState keyboardState;
-        KeyboardState previousKeyboardState;
-
-        GamePadState gamePadState;
-        GamePadState previousGamePadState;
+        private GamePadState gamePadState;
+        private GamePadState previousGamePadState;
         
-        // Move this out into keyboard/gamepad implemenations
         private Array _allButtons;
         private Array _allKeys;
 
-        public InputManager (EventBus eventBus)
+        private const int PLAYER_ONE = 1;
+
+
+
+        private static InputManager _INSTANCE
         {
-            _eventBus = eventBus;
-            _allButtons = Enum.GetValues(typeof(Buttons));
-            _allKeys = Enum.GetValues(typeof(Keys));
-            __actionKeyBinds = new Dictionary<string, string>(){
-                { "F", "SkipScreen" }
-            };
+            get
+            {
+                if (_INSTANCE == null)
+                {
+                    throw new SingletonNotInitializedException("GameScreenService");
+                }
+                else
+                {
+                    return _INSTANCE;
+                }
+            }
         }
 
 
 
-        public void SetActiveInputActionMap(IInputActionMap activeInputActionMap)
+        public InputManager (InputEventBus eventBus, IInputControlScheme<Keys> keyboardControlScheme)
         {
-            //_activeInputActionMap = activeInputActionMap;
+            _eventBus = eventBus;
+            _keyboardControlScheme = keyboardControlScheme;
+
+            _allButtons = Enum.GetValues(typeof(Buttons));
+            _allKeys = Enum.GetValues(typeof(Keys));
+        }
+
+
+
+        public void SetKeyboardControlScheme(IInputControlScheme<Keys> keyboardControlScheme)
+        {
+            _keyboardControlScheme = keyboardControlScheme;
         }
 
 
@@ -51,7 +67,7 @@ namespace Invsion.Engine.Input
         public void ProcessInput ()
         {
             keyboardState = Keyboard.GetState();
-            gamePadState = GamePad.GetState(1);
+            gamePadState = GamePad.GetState(PLAYER_ONE);
 
             _processPressedButtons();
             _processPressedKeys();
@@ -68,7 +84,7 @@ namespace Invsion.Engine.Input
             {
                 if (gamePadState.IsButtonDown(button))
                 {
-                    //_activeInputActionMap.ExecuteActionForInput(button);
+                    Debug.WriteLine("Controller input not yest supported");
                 }
             }
         }
@@ -81,12 +97,8 @@ namespace Invsion.Engine.Input
             {
                 if (keyboardState.IsKeyDown(key))
                 {
-                    // Not going to work for both keyboard and pad support due to oduplicated inputs.
-                    // Keyboard A and Controller A for example.
-                    string action;
-                    __actionKeyBinds.TryGetValue(key.ToString(), out action);
-                    // Probably needs to be moved into a proper command structure
-                    _eventBus.InputPressed.Invoke(this, action);
+                    string action = _keyboardControlScheme.GetActionForInput(key);
+                    _eventBus.InvokeInputEvent(this, action);
                 }
             }
         }

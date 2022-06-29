@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Invsion.Engine
 {
-    interface IGameScreenService
+    public interface IGameScreenService
     {
         public void AddScreen (IGameScreen screen);
 

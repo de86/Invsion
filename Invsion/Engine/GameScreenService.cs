@@ -11,27 +11,30 @@ using Invsion.Engine.Errors;
 
 namespace Invsion.Engine
 {
-    class GameScreenService : IGameScreenService
+    public sealed class GameScreenService : IGameScreenService
     {
-        private GameScreenService _INSTANCE {
-            get
-            {
-                if (_INSTANCE == null)
-                {
-                    throw new SingletonNotInitializedException("GameScreenService");
-                } else
-                {
-                    return _INSTANCE;
-                }
-            }
-        }
-
-
         private IAssetManager _assetManager;
         private SpriteBatch _defaultSpriteBatch;
 
         private Dictionary<ScreenName, IGameScreen> _gameScreens;
         private IGameScreen _activeGameScreen;
+
+
+
+        private static GameScreenService _INSTANCE
+        {
+            get
+            {
+                if (_INSTANCE == null)
+                {
+                    throw new SingletonNotInitializedException("GameScreenService");
+                }
+                else
+                {
+                    return _INSTANCE;
+                }
+            }
+        }
 
 
 

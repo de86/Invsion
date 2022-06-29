@@ -8,8 +8,10 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 using Invsion.Engine;
-using Invsion.Engine.Input;
+using Invsion.Engine.Events;
 using Invsion.Engine.Graphics;
+
+using Invsion.Src.Constants;
 
 namespace Invsion.Src.Screens
 {
@@ -38,14 +40,14 @@ namespace Invsion.Src.Screens
 
         public override void RegisterInputEventHandlers ()
         {
-            EventBus.InputPressed.Subscribe(_onSkipScreen);
+            InputEventBus.SubscribeToEvent(INPUT_ACTIONS.FIRE_PRIMARY, _onSkipScreen);
         }
 
 
 
         public override void UnregisterInputEventHandlers ()
         {
-            EventBus.InputPressed.Subscribe(_onSkipScreen);
+            InputEventBus.UnsubscribeFromEvent(INPUT_ACTIONS.FIRE_PRIMARY, _onSkipScreen);
         }
 
 
@@ -120,8 +122,9 @@ namespace Invsion.Src.Screens
 
 
 
-        private void _onSkipScreen (object source, string action)
+        private void _onSkipScreen (object source, object actionObj)
         {
+            var action = (string)actionObj;
             GameScreenService.SetActiveScreen(ScreenName.TITLE);
         }
 

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Microsoft.Xna.Framework.Input;
+
 namespace Invsion.Engine.Input
 {
-    interface IInputManager
+    public interface IInputManager
     {
-        public void SetActiveInputActionMap (IInputActionMap inputController);
+        public void SetKeyboardControlScheme (IInputControlScheme<Keys> keyboardControlScheme);
 
         public void ProcessInput ();
     }
