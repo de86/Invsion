@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,12 +7,6 @@ namespace Invsion.Engine.Utilities
 {
     public static class Utils
     {
-        public static bool Assert (bool condition, Exception e)
-        {
-            if (condition) return true;
-
-            throw e;
-        }
 
 
         public static void Noop ()
@@ -21,20 +15,21 @@ namespace Invsion.Engine.Utilities
         }
 
 
-
-        public static Vector2 GetTextureCenter (Texture2D texture)
+        /// <summary>
+        /// Method GetCombinedArray Returns a new array containing all items in the provided arrays.
+        /// </summary>
+        /// <typeparam name="T">The type of the arrays to be combined</typeparam>
+        /// <param name="a">The first array</param>
+        public static T[] GetCombinedArray<T> (params T[][] arrays)
         {
-            return new Vector2(
-                texture.Width / 2,
-                texture.Height / 2
-            );
-        }
+            var combinedList = new List<T>();
 
+            foreach (T[] array in arrays)
+            {
+                combinedList.AddRange(array);
+            }
 
-
-        public static long GetNowInMillis ()
-        {
-            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            return combinedList.ToArray();
         }
     }
 }

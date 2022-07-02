@@ -8,5 +8,6 @@
         public static string TITLE_FONT = "Fonts/orbitron-regular";
         public static string TITLE_FONT_SMALL = "Fonts/orbitron-regular-24";
         public static string TITLE_MUSIC_SMALL = "Audio/Music/neon-god-loop";
+        public static string TEXTURE_PLAYER_SHIP = "Art/ship_L";
     }
 }

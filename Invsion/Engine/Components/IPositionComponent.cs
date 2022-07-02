@@ -15,5 +15,6 @@ namespace Invsion.Engine.Components
         public void SetY (float y);
         public void SetPosition (float x, float y);
         public void SetPosition (Vector2 position);
+        public void Translate (float x, float y);
     }
 }

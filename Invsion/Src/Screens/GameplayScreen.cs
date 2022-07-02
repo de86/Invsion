@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Invsion.Engine;
+using Invsion.Engine.Events;
 using Invsion.Engine.Input;
 
 using Invsion.Src.Entities.Ship;
@@ -15,9 +16,6 @@ namespace Invsion.Src.Screens
 {
     class GameplayScreen : GameScreen
     {
-        
-        private IInputActionMap _inputActionMap;
-
         private PlayerShip player;
 
         public GameplayScreen (GameServiceContainer services) : base(ScreenName.GAMEPLAY, services) {
@@ -28,13 +26,14 @@ namespace Invsion.Src.Screens
 
         public override void RegisterInputEventHandlers ()
         {
-            return;
+            player.RegisterInputEventHandlers(InputEventBus);
         }
 
 
 
         public override void UnregisterInputEventHandlers ()
         {
+            // Unregister player event handlers
             return;
         }
 
@@ -43,7 +42,6 @@ namespace Invsion.Src.Screens
         public override void Initialize ()
         {
             player = new PlayerShip();
-            _inputActionMap = new InputActionMap();
         }
 
 
@@ -51,8 +49,6 @@ namespace Invsion.Src.Screens
         public override void Start ()
         {
             base.Start();
-
-            //InputManager.SetActiveInputActionMap(_inputActionMap);
         }
 
 
@@ -68,7 +64,7 @@ namespace Invsion.Src.Screens
 
         public override void Update (GameTime gameTime)
         {
-            return;
+            player.Update(gameTime.ElapsedGameTime.TotalMilliseconds);
         }
 
 
@@ -76,8 +72,6 @@ namespace Invsion.Src.Screens
         public override void Draw (SpriteBatch defaultSpriteBatch, GameTime gameTime)
         {
             player.Draw(defaultSpriteBatch);
-
-            return;
         }
 
 

@@ -3,6 +3,7 @@
     public static class INPUT_ACTIONS
     {
         // Move out of Engine. These are game specific
+        public static string MOVE = "move_down";
         public static string MOVE_LEFT = "move_left";
         public static string MOVE_RIGHT = "move_right";
         public static string MOVE_UP = "move_up";

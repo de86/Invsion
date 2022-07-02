@@ -74,5 +74,11 @@ namespace Invsion.Engine.Components
             _x = position.X;
             _y = position.Y;
         }
+
+        public void Translate (float x, float y)
+        {
+            _x += x;
+            _y += y;
+        }
     }
 }

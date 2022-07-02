@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 using Invsion.Engine.Errors;
 using Invsion.Engine.Events;
+using Invsion.Engine.Utilities;
 
 namespace Invsion.Engine.Input
 {
@@ -25,8 +26,14 @@ namespace Invsion.Engine.Input
         private Array _allButtons;
         private Array _allKeys;
 
+        private Keys[] _pressedKeys;
+        private List<Keys> _prevPressedKeys;
+
         private const int PLAYER_ONE = 1;
 
+        // probably should be enum
+        public readonly static ushort INPUT_STATE_PRESSED = 1;
+        public readonly static ushort INPUT_STATE_RELEASED = 2;
 
 
         private static InputManager _INSTANCE
@@ -53,6 +60,7 @@ namespace Invsion.Engine.Input
 
             _allButtons = Enum.GetValues(typeof(Buttons));
             _allKeys = Enum.GetValues(typeof(Keys));
+            _prevPressedKeys = new List<Keys>();
         }
 
 
@@ -69,8 +77,9 @@ namespace Invsion.Engine.Input
             keyboardState = Keyboard.GetState();
             gamePadState = GamePad.GetState(PLAYER_ONE);
 
-            _processPressedButtons();
-            _processPressedKeys();
+            _pressedKeys = keyboardState.GetPressedKeys();
+
+            _processInputs();
 
             previousKeyboardState = keyboardState;
             previousGamePadState = gamePadState;
@@ -78,29 +87,52 @@ namespace Invsion.Engine.Input
 
 
 
-        private void _processPressedButtons ()
+        private void _processInputs ()
         {
-            foreach (Buttons button in _allButtons)
+            Keys[] keysToCheck = Utils.GetCombinedArray<Keys>(_pressedKeys, _prevPressedKeys.ToArray());
+
+            foreach (Keys key in keysToCheck)
             {
-                if (gamePadState.IsButtonDown(button))
-                {
-                    Debug.WriteLine("Controller input not yest supported");
-                }
+                if (key.Equals(Keys.None))
+                    continue;
+
+                _processInput(key);
             }
         }
 
 
 
-        private void _processPressedKeys ()
+        private void _processInput (Keys key)
         {
-            foreach (Keys key in _allKeys)
+            if (_keyIsNewlyPressed(key))
             {
-                if (keyboardState.IsKeyDown(key))
-                {
-                    string action = _keyboardControlScheme.GetActionForInput(key);
-                    _eventBus.InvokeInputEvent(this, action);
-                }
+                string action = _keyboardControlScheme.GetActionForInput(key);
+                _prevPressedKeys.Add(key);
+                _eventBus.InvokeInputEvent(this, action, INPUT_STATE_PRESSED);
             }
+            else if (_keyIsReleased(key))
+            {
+                string action = _keyboardControlScheme.GetActionForInput(key);
+                _prevPressedKeys.Remove(key);
+                _eventBus.InvokeInputEvent(this, action, INPUT_STATE_RELEASED);
+            }
+        }
+
+
+
+        private bool _keyIsNewlyPressed (Keys key)
+        {
+            int prevPressedKeyIndex = Array.IndexOf(_prevPressedKeys.ToArray(), key);
+
+            return prevPressedKeyIndex < 0;
+        }
+
+
+        private bool _keyIsReleased (Keys key)
+        {
+            int pressedKeyIndex = Array.IndexOf(_pressedKeys, key);
+
+            return pressedKeyIndex < 0;
         }
     }
 }

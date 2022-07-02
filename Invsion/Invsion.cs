@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -23,7 +21,7 @@ namespace Invsion
         private int WINDOW_HEIGHT = 720;
         private int RESOLUTION_WIDTH = 1920;
         private int RESOLUTION_HEIGHT = 1080;
-        private ScreenName _startingGameScreen = ScreenName.SPLASH;
+        private ScreenName _startingGameScreen = ScreenName.GAMEPLAY;
 
         private GraphicsDeviceManager _graphics;
         private GraphicsDevice _graphicsDevice;
@@ -56,11 +54,19 @@ namespace Invsion
             // Init Input
             var keyboardInputControlScheme = new InputControlScheme<Keys>();
             keyboardInputControlScheme.BindActionToInput(Keys.Space, INPUT_ACTIONS.FIRE_PRIMARY);
+            keyboardInputControlScheme.BindActionToInput(Keys.Left, INPUT_ACTIONS.MOVE_LEFT);
+            keyboardInputControlScheme.BindActionToInput(Keys.Right, INPUT_ACTIONS.MOVE_RIGHT);
+            
+            // Init Input Events
+            var inputEventBus = new InputEventBus();
+            inputEventBus.CreateEventForAction(INPUT_ACTIONS.FIRE_PRIMARY);
+            inputEventBus.CreateEventForAction(INPUT_ACTIONS.MOVE_LEFT);
+            inputEventBus.CreateEventForAction(INPUT_ACTIONS.MOVE_RIGHT);
+
+            _inputManager = new InputManager(inputEventBus, keyboardInputControlScheme);
 
             // Initialize Services
             _settingsManager = new SettingsManager();
-            var inputEventBus = new InputEventBus();
-            _inputManager = new InputManager(inputEventBus, keyboardInputControlScheme);
             var sharedContentManager = new ContentManager(Services, Content.RootDirectory);
             var uiContentManager = new ContentManager(Services, Content.RootDirectory);
             var levelContentManager = new ContentManager(Services, Content.RootDirectory);
@@ -81,13 +87,13 @@ namespace Invsion
             _gameScreenService.AddScreen(new GameplayScreen(Services));
             _gameScreenService.Start(_startingGameScreen);
 
-            base.Initialize();
-
             // Get settings required for launch
             WINDOW_WIDTH = _settingsManager.GetSettingValue<int>("WINDOW_WIDTH");
             WINDOW_HEIGHT = _settingsManager.GetSettingValue<int>("WINDOW_HEIGHT");
             RESOLUTION_WIDTH = _settingsManager.GetSettingValue<int>("RESOLUTION_WIDTH");
             RESOLUTION_HEIGHT = _settingsManager.GetSettingValue<int>("RESOLUTION_HEIGHT");
+
+            base.Initialize();
 
             // Must go after base.Initialize()
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;

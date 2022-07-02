@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework.Input;
@@ -10,39 +11,40 @@ using Invsion.Src.Constants;
 
 namespace Invsion.Engine.Events
 {
-    public class InputEventBus
+    public class InputEventBus : IInputEventBus
     {
         // object is ok for now but would be nice to find a way to properly handle
         // generic event args without typing the dictionary itself
         private Dictionary<string, GameEvent<object>> _actionEventBindings;
 
-        public GameEvent<object> InputPressed = new GameEvent<object>();
-
 
         public InputEventBus ()
         {
             _actionEventBindings = new Dictionary<string, GameEvent<object>>();
-            _actionEventBindings.Add(INPUT_ACTIONS.FIRE_PRIMARY, InputPressed);
+            
         }
 
 
 
-        public void InvokeInputEvent (IInputManager sourceInputManager, string action)
+        public void CreateEventForAction (string action)
+        {
+            _actionEventBindings.Add(action, new GameEvent<object>());
+        }
+
+
+
+        public void InvokeInputEvent (IInputManager sourceInputManager, string action, ushort state)
         {
             GameEvent<object> eventHandler;
             _actionEventBindings.TryGetValue(action, out eventHandler);
 
             if (eventHandler == null)
+            {
+                Debug.WriteLine($"No event handler found for action {action}");
                 return;
+            }
 
-            eventHandler?.Invoke(sourceInputManager, action);
-        }
-
-
-
-        public void AddInputEvent (string input, GameEvent<object> eventHandlers)
-        {
-            _actionEventBindings.Add(input, eventHandlers);
+            eventHandler?.Invoke(sourceInputManager, state);
         }
 
 
@@ -53,7 +55,7 @@ namespace Invsion.Engine.Events
             _actionEventBindings.TryGetValue(inputAction, out eventHandler);
 
             if (eventHandler == null)
-                return;
+                throw new IndexOutOfRangeException(inputAction);
 
             eventHandler?.Subscribe(handler);
         }
