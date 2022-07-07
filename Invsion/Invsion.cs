@@ -56,12 +56,16 @@ namespace Invsion
             keyboardInputControlScheme.BindActionToInput(Keys.Space, INPUT_ACTIONS.FIRE_PRIMARY);
             keyboardInputControlScheme.BindActionToInput(Keys.Left, INPUT_ACTIONS.MOVE_LEFT);
             keyboardInputControlScheme.BindActionToInput(Keys.Right, INPUT_ACTIONS.MOVE_RIGHT);
-            
+            keyboardInputControlScheme.BindActionToInput(Keys.Up, INPUT_ACTIONS.MOVE_UP);
+            keyboardInputControlScheme.BindActionToInput(Keys.Down, INPUT_ACTIONS.MOVE_DOWN);
+
             // Init Input Events
             var inputEventBus = new InputEventBus();
             inputEventBus.CreateEventForAction(INPUT_ACTIONS.FIRE_PRIMARY);
             inputEventBus.CreateEventForAction(INPUT_ACTIONS.MOVE_LEFT);
             inputEventBus.CreateEventForAction(INPUT_ACTIONS.MOVE_RIGHT);
+            inputEventBus.CreateEventForAction(INPUT_ACTIONS.MOVE_UP);
+            inputEventBus.CreateEventForAction(INPUT_ACTIONS.MOVE_DOWN);
 
             _inputManager = new InputManager(inputEventBus, keyboardInputControlScheme);
 

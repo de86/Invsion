@@ -8,8 +8,8 @@ namespace Invsion.Engine.Components
 {
     public class PositionComponent : IPositionComponent
     {
-        private float _x;
-        private float _y;
+        internal float _x;
+        internal float _y;
 
 
 

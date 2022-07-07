@@ -10,14 +10,15 @@ using Invsion.Engine.Assets;
 using Invsion.Engine.Components;
 using Invsion.Engine.Events;
 using Invsion.Engine.Input;
+using Invsion.Engine.State;
 
 using Invsion.Src.Constants;
+using Invsion.Src.States;
 
 namespace Invsion.Src.Entities.Ship
 {
     class PlayerShip
     {
-        // Ability to move
         // Guns[]
         // Ability to fire
         // Ability to change weapons
@@ -26,21 +27,28 @@ namespace Invsion.Src.Entities.Ship
 
         private int _maxHealth;
         private int _maxShield;
-        private float _maxMoveSpeed = 10;
-        private Vector2 _currentVelocity = Vector2.Zero;
+        private float _acceleration = 200;
+        private float _deceleration = 100;
+        private float _maxMoveSpeed = 750;
 
         private IHealthComponent _health;
         private IHealthComponent _shield;
-        private IPositionComponent _position;
-
+        private IInputEventBus _inputEventBus;
+        private IFiniteStateMachine _stateMachine;
         private Texture2D _playerShipTexture;
 
-        public PlayerShip ()
+        public IDynamicPositionComponent position;
+
+
+
+        public PlayerShip (IInputEventBus inputEventBus, int _startPositionX, int _startPositionY)
         {
+            _inputEventBus = inputEventBus;
             _health = new HealthComponent(_maxHealth);
             _shield = new HealthComponent(_maxShield);
-            // Starting position probably should be passed in
-            _position = new PositionComponent(new Vector2(900, 900));
+            position = new DynamicPositionComponent(_startPositionX, _startPositionY, _acceleration, _deceleration);
+
+            _stateMachine = new FiniteStateMachine();
         }
 
 
@@ -48,71 +56,32 @@ namespace Invsion.Src.Entities.Ship
         public void LoadContent (IAssetManager AssetManager)
         {
             _playerShipTexture = AssetManager.LoadLevelAsset<Texture2D>(ASSETS.TEXTURE_PLAYER_SHIP);
-        }
 
+            _stateMachine.AddState(
+                "active",
+                new PlayerStateActive(
+                    _inputEventBus,
+                    position,
+                    _playerShipTexture,
+                    _maxMoveSpeed
+                )
+            );
 
-
-        public void RegisterInputEventHandlers (IInputEventBus inputEventBus)
-        {
-            inputEventBus.SubscribeToEvent(INPUT_ACTIONS.MOVE_LEFT, _onMoveLeft);
-            inputEventBus.SubscribeToEvent(INPUT_ACTIONS.MOVE_RIGHT, _onMoveRight);
+            _stateMachine.SetInitialState("active");
         }
 
 
 
         public void Update (double deltaMS)
         {
-            float delta = (float)deltaMS / 1000;
-            UpdatePosition(delta);
-        }
-
-
-
-        public void UpdatePosition (float delta)
-        {
-            _position.Translate(_currentVelocity.X * delta, _currentVelocity.Y);
+            _stateMachine.Update(deltaMS);
         }
 
 
 
         public void Draw (SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(
-                _playerShipTexture,
-                _position.GetPosition(),
-                Color.White
-            );
-        }        
-
-
-
-        public void _onMoveLeft (object source, object rawInputState)
-        {
-            ushort inputState = (ushort)rawInputState;
-            Debug.WriteLine(inputState);
-            if (inputState == InputManager.INPUT_STATE_PRESSED)
-            {
-                _currentVelocity.X = -_maxMoveSpeed;
-            }
-            else if (inputState == InputManager.INPUT_STATE_RELEASED)
-            {
-                _currentVelocity.X = 0;
-            }
-        }
-
-
-        public void _onMoveRight (object source, object rawInputState)
-        {
-            ushort inputState = (ushort)rawInputState;
-            Debug.WriteLine(inputState);
-            if (inputState == InputManager.INPUT_STATE_PRESSED)
-            {
-                _currentVelocity.X = _maxMoveSpeed;
-            }
-            else if (inputState == InputManager.INPUT_STATE_RELEASED)
-            {
-                _currentVelocity.X = 0;
-            }
+            _stateMachine.Draw(spriteBatch);
         }
     }
 }

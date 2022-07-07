@@ -106,15 +106,29 @@ namespace Invsion.Engine.Input
         {
             if (_keyIsNewlyPressed(key))
             {
-                string action = _keyboardControlScheme.GetActionForInput(key);
-                _prevPressedKeys.Add(key);
-                _eventBus.InvokeInputEvent(this, action, INPUT_STATE_PRESSED);
+                try
+                {
+                    string action = _keyboardControlScheme.GetActionForInput(key);
+                    _prevPressedKeys.Add(key);
+                    _eventBus.InvokeInputEvent(this, action, INPUT_STATE_PRESSED);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
             }
             else if (_keyIsReleased(key))
             {
-                string action = _keyboardControlScheme.GetActionForInput(key);
-                _prevPressedKeys.Remove(key);
-                _eventBus.InvokeInputEvent(this, action, INPUT_STATE_RELEASED);
+                try
+                {
+                    string action = _keyboardControlScheme.GetActionForInput(key);
+                    _prevPressedKeys.Remove(key);
+                    _eventBus.InvokeInputEvent(this, action, INPUT_STATE_RELEASED);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
             }
         }
 

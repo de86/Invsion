@@ -38,7 +38,6 @@ namespace Invsion.Engine
         public virtual void Start ()
         {
             RegisterInputEventHandlers();
-            LoadContent();
         }
 
         public virtual void Exit ()
