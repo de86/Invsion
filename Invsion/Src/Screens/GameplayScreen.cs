@@ -22,8 +22,8 @@ namespace Invsion.Src.Screens
         private int _playerStartPositionX = 900;
         private int _playerStartPositionY = 900;
 
-        private const int WORLD_BOUNDARY_WIDTH = 800;
-        private const int WORLD_BOUNDARY_HEIGHT = 500;
+        private const int WORLD_BOUNDARY_WIDTH = 1000;
+        private const int WORLD_BOUNDARY_HEIGHT = 700;
         
         private PlayerShip _player;
         private Rect _worldBoundary;
@@ -83,30 +83,7 @@ namespace Invsion.Src.Screens
         public override void Update (GameTime gameTime)
         {
             _player.Update(gameTime.ElapsedGameTime.TotalMilliseconds);
-            _constrainPositionToWorldBounds(_player.boundingBox);
-        }
-
-
-
-        private void _constrainPositionToWorldBounds (Rect playerBoundingBox)
-        {;
-            if (playerBoundingBox.Right() > _worldBoundary.Right())
-            {
-                playerBoundingBox.SetRight(_worldBoundary.Right());
-            }
-            else if (playerBoundingBox.Left() < _worldBoundary.Left())
-            {
-                playerBoundingBox.SetLeft(_worldBoundary.Left());
-            }
-
-            if (playerBoundingBox.Top() < _worldBoundary.Top())
-            {
-                playerBoundingBox.SetTop(_worldBoundary.Top());
-            }
-            else if (playerBoundingBox.Bottom() > _worldBoundary.Bottom())
-            {
-                playerBoundingBox.SetBottom(_worldBoundary.Bottom());
-            }
+            Utils.ConstrainPositionToWorldBounds(_player.boundingBox, _worldBoundary);
         }
 
 
