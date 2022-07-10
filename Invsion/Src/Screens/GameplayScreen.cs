@@ -23,7 +23,7 @@ namespace Invsion.Src.Screens
         private int _playerStartPositionY = 900;
 
         private const int WORLD_BOUNDARY_WIDTH = 800;
-        private const int WORLD_BOUNDARY_HEIGHT = 1080;
+        private const int WORLD_BOUNDARY_HEIGHT = 500;
         
         private PlayerShip _player;
         private Rect _worldBoundary;
@@ -43,7 +43,7 @@ namespace Invsion.Src.Screens
             _worldBoundary = new Rect(Vector2.Zero, WORLD_BOUNDARY_WIDTH, WORLD_BOUNDARY_HEIGHT);
             _worldBoundary.CenterPositionAt(
                 SettingsManager.GetSetting(SETTINGS.RESOLUTION_WIDTH).GetParsedValue<int>() / 2,
-                SettingsManager.GetSetting(SETTINGS.RESOLUTION_HEIGHT).GetParsedValue<int>() / 2
+                SettingsManager.GetSetting(SETTINGS.RESOLUTION_HEIGHT).GetParsedValue<int>() - WORLD_BOUNDARY_HEIGHT / 2
             );
         }
 

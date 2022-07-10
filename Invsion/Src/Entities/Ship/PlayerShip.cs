@@ -40,6 +40,7 @@ namespace Invsion.Src.Entities.Ship
         private Texture2D _playerShipTexture;
         public Rect boundingBox;
         private IPositionAccelerator positionAccelerator;
+        private Vector2 _boundingBoxPositionOffset = new Vector2(22.5f, 22.5f);
 
         public Position position;
 
@@ -53,7 +54,7 @@ namespace Invsion.Src.Entities.Ship
 
             position = new Position(_startPositionX, _startPositionY);
             positionAccelerator = new PositionAccelerator(position, _acceleration, _decelerationRate);
-            boundingBox = new Rect(position, 0, 0);
+            boundingBox = new Rect(position, 80, 80, _boundingBoxPositionOffset);
 
             _stateMachine = new FiniteStateMachine();
         }
@@ -63,8 +64,6 @@ namespace Invsion.Src.Entities.Ship
         public void LoadContent (IAssetManager AssetManager)
         {
             _playerShipTexture = AssetManager.LoadLevelAsset<Texture2D>(ASSETS.TEXTURE_PLAYER_SHIP);
-            boundingBox.Width = _playerShipTexture.Width;
-            boundingBox.Height = _playerShipTexture.Height;
 
             _stateMachine.AddState(
                 "active",

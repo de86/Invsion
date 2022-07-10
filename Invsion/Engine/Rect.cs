@@ -15,6 +15,7 @@ namespace Invsion.Engine
         public float Height = 0;
 
         private Position _position;
+        private Vector2 _offset = Vector2.Zero;
 
         public Rect (Position position, float width)
         {
@@ -50,6 +51,24 @@ namespace Invsion.Engine
             Height = height;
         }
 
+        public Rect (Position position, float width, Vector2 offset)
+        {
+            _position = position;
+            Width = width;
+            Height = width;
+            _offset = offset;
+        }
+
+
+
+        public Rect (Position position, float width, float height, Vector2 offset)
+        {
+            _position = position;
+            Width = width;
+            Height = height;
+            _offset = offset;
+        }
+
 
         public Vector2 GetPosition ()
         {
@@ -60,28 +79,28 @@ namespace Invsion.Engine
 
         public float Right ()
         {
-            return _position.X + Width;
+            return _position.X + _offset.X + Width;
         }
 
 
 
         public float Left ()
         {
-            return _position.X;
+            return _position.X + _offset.X;
         }
 
 
 
         public float Top ()
         {
-            return _position.Y;
+            return _position.Y + _offset.Y;
         }
 
 
 
         public float Bottom ()
         {
-            return _position.Y + Height;
+            return _position.Y + _offset.X + Height;
         }
 
 
@@ -128,28 +147,28 @@ namespace Invsion.Engine
 
         public void SetLeft (float xLeft)
         {
-            _position.X = xLeft;
+            _position.X = xLeft - _offset.X;
         }
 
 
 
         public void SetRight (float xRight)
         {
-            _position.X = xRight - Width;
+            _position.X = xRight - _offset.X - Width;
         }
 
 
 
         public void SetTop (float yTop)
         {
-            _position.Y = yTop;
+            _position.Y = yTop - _offset.Y;
         }
 
 
 
         public void SetBottom (float yBottom)
         {
-            _position.Y = yBottom - Height;
+            _position.Y = yBottom - _offset.Y - Height;
         }
 
 
@@ -165,10 +184,10 @@ namespace Invsion.Engine
         public bool Contains (float x, float y)
         {
             return (
-                _position.X <= x
-                && x < (_position.X + Width)
-                && _position.Y <= y
-                && y < (_position.Y + Height));
+                _position.X + _offset.X <= x
+                && x < (_position.X + _offset.X + Width)
+                && _position.Y + _offset.Y <= y
+                && y < (_position.Y + _offset.Y + Height));
         }
     }
 }
