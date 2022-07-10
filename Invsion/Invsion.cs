@@ -137,6 +137,7 @@ namespace Invsion
             // Will need spritebatch management. Must keep Begin/End calls to a minimum.
             // Perhaps a spritebatch service that can be queried to grab the needed pre-existing spritebatches
             _spriteBatch.Begin();
+            // Pass in spritebatch or add graphics device to services?
             _gameScreenService.DrawActiveScreen(gameTime);
             _spriteBatch.End();
 

@@ -10,6 +10,7 @@ using Invsion.Engine;
 using Invsion.Engine.Components;
 using Invsion.Engine.Events;
 using Invsion.Engine.Input;
+using Invsion.Engine.Utilities;
 
 using Invsion.Src.Constants;
 using Invsion.Src.Entities.Ship;
@@ -20,8 +21,12 @@ namespace Invsion.Src.Screens
     {
         private int _playerStartPositionX = 900;
         private int _playerStartPositionY = 900;
+
+        private const int WORLD_BOUNDARY_WIDTH = 800;
+        private const int WORLD_BOUNDARY_HEIGHT = 1080;
+        
         private PlayerShip _player;
-        private SimpleRect _worldBoundary;
+        private Rect _worldBoundary;
 
 
 
@@ -35,7 +40,7 @@ namespace Invsion.Src.Screens
         {
             _player = new PlayerShip(InputEventBus, _playerStartPositionX, _playerStartPositionY);
 
-            _worldBoundary = new SimpleRect(0, 0, 500, 1080);
+            _worldBoundary = new Rect(Vector2.Zero, WORLD_BOUNDARY_WIDTH, WORLD_BOUNDARY_HEIGHT);
             _worldBoundary.CenterPositionAt(
                 SettingsManager.GetSetting(SETTINGS.RESOLUTION_WIDTH).GetParsedValue<int>() / 2,
                 SettingsManager.GetSetting(SETTINGS.RESOLUTION_HEIGHT).GetParsedValue<int>() / 2
@@ -78,33 +83,30 @@ namespace Invsion.Src.Screens
         public override void Update (GameTime gameTime)
         {
             _player.Update(gameTime.ElapsedGameTime.TotalMilliseconds);
-            _constrainPositionToWorldBounds(_player.position);
+            _constrainPositionToWorldBounds(_player.boundingBox);
         }
 
 
 
-        private void _constrainPositionToWorldBounds (IPositionComponent entityPositionComponent)
-        {
-            Vector2 entityPosition = entityPositionComponent.GetPosition();
-            if (entityPosition.X > _worldBoundary.Right())
+        private void _constrainPositionToWorldBounds (Rect playerBoundingBox)
+        {;
+            if (playerBoundingBox.Right() > _worldBoundary.Right())
             {
-                entityPosition.X = _worldBoundary.Right();
+                playerBoundingBox.SetRight(_worldBoundary.Right());
             }
-            else if (entityPosition.X < _worldBoundary.Left())
+            else if (playerBoundingBox.Left() < _worldBoundary.Left())
             {
-                entityPosition.X = _worldBoundary.Left();
-            }
-
-            if (entityPosition.Y < _worldBoundary.Top())
-            {
-                entityPosition.Y = _worldBoundary.Top();
-            }
-            else if (entityPosition.Y > _worldBoundary.Bottom())
-            {
-                entityPosition.Y = _worldBoundary.Bottom();
+                playerBoundingBox.SetLeft(_worldBoundary.Left());
             }
 
-            entityPositionComponent.SetPosition(entityPosition);
+            if (playerBoundingBox.Top() < _worldBoundary.Top())
+            {
+                playerBoundingBox.SetTop(_worldBoundary.Top());
+            }
+            else if (playerBoundingBox.Bottom() > _worldBoundary.Bottom())
+            {
+                playerBoundingBox.SetBottom(_worldBoundary.Bottom());
+            }
         }
 
 
@@ -112,6 +114,14 @@ namespace Invsion.Src.Screens
         public override void Draw (SpriteBatch defaultSpriteBatch, GameTime gameTime)
         {
             _player.Draw(defaultSpriteBatch);
+        }
+
+
+
+        public override void DebugDraw (SpriteBatch defaultSpriteBatch, GameTime gameTime)
+        {
+            _player.DebugDraw(defaultSpriteBatch, GraphicsDevice);
+            DebugUtils.DrawRect(defaultSpriteBatch, GraphicsDevice, _worldBoundary);
         }
 
 

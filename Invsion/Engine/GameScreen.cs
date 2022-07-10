@@ -18,6 +18,7 @@ namespace Invsion.Engine
         internal ISettingsManager SettingsManager;
         internal IAssetManager AssetManager;
         internal InputEventBus InputEventBus;
+        internal GraphicsDevice GraphicsDevice;
 
         internal bool _isPaused = false;
 
@@ -31,9 +32,11 @@ namespace Invsion.Engine
             SettingsManager = (ISettingsManager)services.GetService(typeof(ISettingsManager));
             AssetManager = (IAssetManager)services.GetService(typeof(IAssetManager));
             InputEventBus = (InputEventBus)services.GetService(typeof(InputEventBus));
+            GraphicsDevice = (GraphicsDevice)services.GetService(typeof(GraphicsDevice));
         }
 
         public abstract void Draw (SpriteBatch defaultSpriteBatch, GameTime gameTime);
+        public abstract void DebugDraw (SpriteBatch defaultSpriteBatch, GameTime gameTime);
 
         public virtual void Start ()
         {

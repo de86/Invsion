@@ -122,6 +122,13 @@ namespace Invsion.Src.Screens
 
 
 
+        public override void DebugDraw (SpriteBatch defaultSpriteBatch, GameTime gameTime)
+        {
+            return;
+        }
+
+
+
         public override void Pause ()
         {
             return;

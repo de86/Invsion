@@ -22,6 +22,13 @@ namespace Invsion.Engine
         public void Draw(SpriteBatch defaultSpriteBatch, GameTime gameTime);
 
         /// <summary>
+        /// Called from the GameScreenService after Draw(). Used for drawing debug information to the screen
+        /// </summary>
+        /// <param name="defaultSpriteBatch"></param>
+        /// <param name="gameTime"></param>
+        public void DebugDraw (SpriteBatch defaultSpriteBatch, GameTime gameTime);
+
+        /// <summary>
         /// Called when the GameScreen is no longer the active running screen
         /// </summary>
         public void Pause();

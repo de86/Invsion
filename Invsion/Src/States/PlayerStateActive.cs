@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Invsion.Engine;
 using Invsion.Engine.Assets;
 using Invsion.Engine.Components;
 using Invsion.Engine.Events;
@@ -21,20 +22,23 @@ namespace Invsion.Src.States
 
         private Vector2 _currentDirection;
         private IInputEventBus _inputEventBus;
-        private IDynamicPositionComponent _position;
+        private Position _position;
+        private IPositionAccelerator _positionAccelerator;
         private Texture2D _playerShipTexture;
 
 
 
         public PlayerStateActive (
             IInputEventBus inputEventBus,
-            IDynamicPositionComponent position,
+            Position position,
+            IPositionAccelerator positionAccelerator,
             Texture2D playerShipTexture,
             float maxMoveSpeed
         )
         {
             _inputEventBus = inputEventBus;
             _position = position;
+            _positionAccelerator = positionAccelerator;
             _playerShipTexture = playerShipTexture;
             _maxMoveSpeed = maxMoveSpeed;
         }
@@ -121,14 +125,7 @@ namespace Invsion.Src.States
         public void Update (double deltaMS)
         {
             float delta = (float)deltaMS / 1000;
-            UpdatePosition(delta);
-        }
-
-
-
-        public void UpdatePosition (float delta)
-        {
-            _position.AccelerateAndMove(_currentDirection, _maxMoveSpeed, delta);
+            _positionAccelerator.AccelerateAndMove(_currentDirection, _maxMoveSpeed, delta);
         }
 
 

@@ -19,6 +19,8 @@ namespace Invsion.Engine
         private Dictionary<ScreenName, IGameScreen> _gameScreens;
         private IGameScreen _activeGameScreen;
 
+        private bool _isDebugDrawEnabled = true;
+
 
 
         private static GameScreenService _INSTANCE
@@ -128,6 +130,9 @@ namespace Invsion.Engine
         public void DrawActiveScreen (GameTime gameTime)
         {
             _activeGameScreen.Draw(_defaultSpriteBatch, gameTime);
+
+            if (_isDebugDrawEnabled)
+                _activeGameScreen.DebugDraw(_defaultSpriteBatch, gameTime);
         }
 
 

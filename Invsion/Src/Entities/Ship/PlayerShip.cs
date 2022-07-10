@@ -6,11 +6,13 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Invsion.Engine;
 using Invsion.Engine.Assets;
 using Invsion.Engine.Components;
 using Invsion.Engine.Events;
 using Invsion.Engine.Input;
 using Invsion.Engine.State;
+using Invsion.Engine.Utilities;
 
 using Invsion.Src.Constants;
 using Invsion.Src.States;
@@ -28,7 +30,7 @@ namespace Invsion.Src.Entities.Ship
         private int _maxHealth;
         private int _maxShield;
         private float _acceleration = 200;
-        private float _deceleration = 100;
+        private float _decelerationRate = 0.2f;
         private float _maxMoveSpeed = 750;
 
         private IHealthComponent _health;
@@ -36,8 +38,10 @@ namespace Invsion.Src.Entities.Ship
         private IInputEventBus _inputEventBus;
         private IFiniteStateMachine _stateMachine;
         private Texture2D _playerShipTexture;
+        public Rect boundingBox;
+        private IPositionAccelerator positionAccelerator;
 
-        public IDynamicPositionComponent position;
+        public Position position;
 
 
 
@@ -46,7 +50,10 @@ namespace Invsion.Src.Entities.Ship
             _inputEventBus = inputEventBus;
             _health = new HealthComponent(_maxHealth);
             _shield = new HealthComponent(_maxShield);
-            position = new DynamicPositionComponent(_startPositionX, _startPositionY, _acceleration, _deceleration);
+
+            position = new Position(_startPositionX, _startPositionY);
+            positionAccelerator = new PositionAccelerator(position, _acceleration, _decelerationRate);
+            boundingBox = new Rect(position, 0, 0);
 
             _stateMachine = new FiniteStateMachine();
         }
@@ -56,12 +63,15 @@ namespace Invsion.Src.Entities.Ship
         public void LoadContent (IAssetManager AssetManager)
         {
             _playerShipTexture = AssetManager.LoadLevelAsset<Texture2D>(ASSETS.TEXTURE_PLAYER_SHIP);
+            boundingBox.Width = _playerShipTexture.Width;
+            boundingBox.Height = _playerShipTexture.Height;
 
             _stateMachine.AddState(
                 "active",
                 new PlayerStateActive(
                     _inputEventBus,
                     position,
+                    positionAccelerator,
                     _playerShipTexture,
                     _maxMoveSpeed
                 )
@@ -82,6 +92,13 @@ namespace Invsion.Src.Entities.Ship
         public void Draw (SpriteBatch spriteBatch)
         {
             _stateMachine.Draw(spriteBatch);
+        }
+
+
+
+        public void DebugDraw (SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
+        {
+            DebugUtils.DrawRect(spriteBatch, graphicsDevice, boundingBox);
         }
     }
 }
